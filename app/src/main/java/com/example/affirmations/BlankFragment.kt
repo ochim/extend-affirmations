@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import com.example.affirmations.adapter.ItemAdapter
-import com.example.affirmations.data.Datasource
+import androidx.viewpager2.widget.ViewPager2
+import com.example.affirmations.adapter.CollectionAdapter
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 /**
  * A simple [Fragment] subclass.
@@ -15,6 +16,9 @@ import com.example.affirmations.data.Datasource
  * create an instance of this fragment.
  */
 class BlankFragment : Fragment() {
+
+    private lateinit var collectionAdapter: CollectionAdapter
+    private lateinit var viewPager: ViewPager2
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,11 +30,15 @@ class BlankFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val myDataset = Datasource().loadAffirmations()
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.adapter = ItemAdapter(requireActivity(), myDataset)
+        collectionAdapter = CollectionAdapter(this)
+        viewPager = view.findViewById(R.id.pager)
+        viewPager.adapter = collectionAdapter
 
-        recyclerView.setHasFixedSize(true)
+        val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
+        tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = "LIST ${(position + 1)}"
+        }.attach()
     }
 
     companion object {
