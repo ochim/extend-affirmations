@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.affirmations.adapter.CollectionAdapter
+import com.example.affirmations.databinding.FragmentBlankBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -17,6 +18,11 @@ import com.google.android.material.tabs.TabLayoutMediator
  */
 class BlankFragment : Fragment() {
 
+    private var _binding: FragmentBlankBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     private lateinit var collectionAdapter: CollectionAdapter
     private lateinit var viewPager: ViewPager2
 
@@ -24,17 +30,22 @@ class BlankFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_blank, container, false)
+        _binding = FragmentBlankBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         collectionAdapter = CollectionAdapter(this)
-        viewPager = view.findViewById(R.id.pager)
+        viewPager = binding.pager
         viewPager.adapter = collectionAdapter
 
-        val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
+        val tabLayout = binding.tabLayout
         tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = "LIST ${(position + 1)}"

@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import com.example.affirmations.adapter.ItemAdapter
 import com.example.affirmations.data.Datasource
+import com.example.affirmations.databinding.FragmentItemBinding
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_INDEX = "index"
@@ -19,6 +19,10 @@ private const val ARG_INDEX = "index"
  */
 class ItemFragment : Fragment() {
 
+    private var _binding: FragmentItemBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
     private var index: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,14 +36,19 @@ class ItemFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_item, container, false)
+        _binding = FragmentItemBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val myDataset = Datasource().loadAffirmations(index ?: 0)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+        val recyclerView = binding.recyclerView
         recyclerView.adapter = ItemAdapter(requireActivity(), myDataset)
 
         recyclerView.setHasFixedSize(true)
