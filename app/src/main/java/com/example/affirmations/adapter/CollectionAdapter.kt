@@ -6,10 +6,21 @@ import com.example.affirmations.ItemFragment
 
 class CollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-    override fun getItemCount(): Int = 10
+    override fun getItemCount(): Int = 10 + 2
 
+    fun getRealCount() = 10
+
+    fun getRealPosition(position: Int): Int {
+        return when (position) {
+            0 -> getRealCount() - 1
+            getRealCount() + 1 -> 0
+            else -> position - 1
+        }
+    }
+
+    // Return a NEW fragment instance in createFragmt
     override fun createFragment(position: Int): Fragment {
-        // Return a NEW fragment instance in createFragmt)
-        return ItemFragment.newInstance("$position")
+        val i = getRealPosition(position)
+        return ItemFragment.newInstance("$i")
     }
 }

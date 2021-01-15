@@ -3,3 +3,4 @@
 - [Navigation](https://developer.android.com/guide/navigation?hl=ja)
 - ViewPager2, TabLayout
 - View Binding
+- ViewPager2を使った無限ループ

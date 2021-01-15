@@ -43,13 +43,39 @@ class BlankFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         collectionAdapter = CollectionAdapter(this)
         viewPager = binding.pager
-        viewPager.adapter = collectionAdapter
+        viewPager.apply {
+            adapter = collectionAdapter
+
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+
+                private var realPosition = -1
+
+                override fun onPageScrollStateChanged(state: Int) {
+                    if (state == ViewPager2.SCROLL_STATE_IDLE && realPosition >= 0) {
+                        viewPager.setCurrentItem(realPosition, false)
+                        realPosition = -1
+                    }
+                }
+
+                override fun onPageSelected(position: Int) {
+                    when (position) {
+                        0 -> realPosition = collectionAdapter.getRealCount()
+                        collectionAdapter.getRealCount() + 1 -> realPosition = 1
+                        else -> {
+                        }
+                    }
+                }
+            })
+            setCurrentItem(1, false)
+        }
 
         val tabLayout = binding.tabLayout
         tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = "LIST ${(position + 1)}"
+            val i = collectionAdapter.getRealPosition(position)
+            tab.text = "LIST ${(i + 1)}"
         }.attach()
+
     }
 
     companion object {
