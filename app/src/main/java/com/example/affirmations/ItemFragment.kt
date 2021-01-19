@@ -1,6 +1,7 @@
 package com.example.affirmations
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.affirmations.adapter.ItemAdapter
 import com.example.affirmations.data.Datasource
 import com.example.affirmations.databinding.FragmentItemBinding
+import com.example.affirmations.model.Affirmation
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_INDEX = "index"
@@ -49,9 +51,14 @@ class ItemFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val myDataset = Datasource().loadAffirmations(index ?: 0)
         val recyclerView = binding.recyclerView
-        recyclerView.adapter = ItemAdapter(requireActivity(), myDataset)
+        recyclerView.adapter = ItemAdapter(requireActivity(), myDataset,
+            { affirmation ->  adapterOnClick(affirmation)})
 
         recyclerView.setHasFixedSize(true)
+    }
+
+    private fun adapterOnClick(affirmation: Affirmation) {
+        Log.d("onClick", getString(affirmation.stringResourceId))
     }
 
     companion object {
