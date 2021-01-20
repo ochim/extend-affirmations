@@ -1,11 +1,12 @@
 package com.example.affirmations
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.affirmations.adapter.ItemAdapter
 import com.example.affirmations.data.Datasource
 import com.example.affirmations.databinding.FragmentItemBinding
@@ -58,7 +59,9 @@ class ItemFragment : Fragment() {
     }
 
     private fun adapterOnClick(affirmation: Affirmation) {
-        Log.d("onClick", getString(affirmation.stringResourceId))
+        val action = BlankFragmentDirections.actionBlankFragmentToItemDetailFragment(affirmation)
+        val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navHostFragment.findNavController().navigate(action)
     }
 
     companion object {
