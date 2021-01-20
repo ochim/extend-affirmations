@@ -5,8 +5,8 @@ import com.example.affirmations.model.Affirmation
 
 class Datasource {
 
-    fun loadAffirmations(): List<Affirmation> {
-        return listOf<Affirmation>(
+    fun loadAffirmations(index: Int): List<Affirmation> {
+        val list = listOf<Affirmation>(
             Affirmation(R.string.affirmation1, R.drawable.image1),
             Affirmation(R.string.affirmation2, R.drawable.image2),
             Affirmation(R.string.affirmation3, R.drawable.image3),
@@ -18,5 +18,6 @@ class Datasource {
             Affirmation(R.string.affirmation9, R.drawable.image9),
             Affirmation(R.string.affirmation10, R.drawable.image10)
         )
+        return listOf(list[index])
     }
 }

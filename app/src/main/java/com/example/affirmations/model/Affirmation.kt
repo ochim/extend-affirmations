@@ -1,9 +1,12 @@
 package com.example.affirmations.model
 
+import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import kotlinx.parcelize.Parcelize
 
-data class Affirmation(
+@Parcelize
+data class Affirmation (
     @StringRes val stringResourceId: Int,
     @DrawableRes val imageResourceId: Int
-)
+): Parcelable
