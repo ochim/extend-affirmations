@@ -4,11 +4,13 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.affirmations.ItemFragment
 
+private val REAL_PAGE_SIZE = 10
+
 class CollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-    override fun getItemCount(): Int = 10 + 2
+    override fun getItemCount(): Int = REAL_PAGE_SIZE + 2
 
-    fun getRealCount() = 10
+    fun getRealCount() = REAL_PAGE_SIZE
 
     fun getRealPosition(position: Int): Int {
         return when (position) {

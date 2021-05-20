@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.affirmations.adapter.ItemAdapter
 import com.example.affirmations.data.Datasource
 import com.example.affirmations.databinding.FragmentItemBinding
@@ -23,6 +24,7 @@ private const val ARG_INDEX = "index"
 class ItemFragment : Fragment() {
 
     private var _binding: FragmentItemBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -38,7 +40,7 @@ class ItemFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentItemBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -52,15 +54,17 @@ class ItemFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val myDataset = Datasource().loadAffirmations(index ?: 0)
         val recyclerView = binding.recyclerView
+        recyclerView.layoutManager = GridLayoutManager(requireActivity(), 1)
         recyclerView.adapter = ItemAdapter(requireActivity(), myDataset,
-            { affirmation ->  adapterOnClick(affirmation)})
+            { affirmation -> adapterOnClick(affirmation) })
 
         recyclerView.setHasFixedSize(true)
     }
 
     private fun adapterOnClick(affirmation: Affirmation) {
         val action = BlankFragmentDirections.actionBlankFragmentToItemDetailFragment(affirmation)
-        val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navHostFragment.findNavController().navigate(action)
     }
 

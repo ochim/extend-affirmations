@@ -29,7 +29,7 @@ class BlankFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentBlankBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -73,7 +73,7 @@ class BlankFragment : Fragment() {
         tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             val i = collectionAdapter.getRealPosition(position)
-            tab.text = "LIST ${(i + 1)}"
+            tab.text = "PAGE ${(i + 1)}"
         }.attach()
 
     }
